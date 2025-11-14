@@ -2,7 +2,6 @@ package com.danny.MoneyManagerApplication.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.danny.MoneyManagerApplication.DTO.ExpenseDTO;
 import com.danny.MoneyManagerApplication.DTO.IncomeDTO;
 import com.danny.MoneyManagerApplication.service.IncomeService;
 

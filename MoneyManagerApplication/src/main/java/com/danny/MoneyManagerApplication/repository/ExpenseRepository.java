@@ -3,9 +3,6 @@ package com.danny.MoneyManagerApplication.repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +22,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity,Long> {
         LocalDate startDate,
         LocalDate ensDate,
         String keyword,
-        Pageable pageable                 //Here we have to check which import we have to take
+        org.springframework.data.domain.Sort sort            
     );
 
     List<ExpenseEntity> findByProfileIdAndDateBetween(Long profilrId, LocalDate startDate, LocalDate endDate);

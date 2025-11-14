@@ -1,15 +1,13 @@
 package com.danny.MoneyManagerApplication.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
-import com.danny.MoneyManagerApplication.DTO.ExpenseDTO;
 import com.danny.MoneyManagerApplication.DTO.IncomeDTO;
 import com.danny.MoneyManagerApplication.entity.CategoryEntity;
-import com.danny.MoneyManagerApplication.entity.ExpenseEntity;
 import com.danny.MoneyManagerApplication.entity.IncomeEntity;
 import com.danny.MoneyManagerApplication.entity.ProfileEntity;
 import com.danny.MoneyManagerApplication.repository.CategoryRepository;
@@ -57,12 +55,23 @@ public class IncomeService {
         incomeRepository.delete(entity);
     }
 
+     public List<IncomeDTO> getLatest5IncomeForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<IncomeEntity> list = incomeRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+        return list.stream().map(this::toDTO).toList();
+    }
 
+    public BigDecimal getTotalIncomeForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        BigDecimal total = incomeRepository.findTotalIncomeByProfileId(profile.getId());
+        return total != null ? total : BigDecimal.ZERO;
+    }
 
-
-
-
-
+    public List<IncomeDTO> filterIncome(LocalDate startDate, LocalDate endDate, String keyword, org.springframework.data.domain.Sort sort){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<IncomeEntity> list = incomeRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(), startDate, endDate, keyword, sort);
+        return list.stream().map(this::toDTO).toList();
+    }
 
 
     private IncomeEntity toEntity(IncomeDTO dto, ProfileEntity profile, CategoryEntity category){

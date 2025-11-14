@@ -1,5 +1,6 @@
 package com.danny.MoneyManagerApplication.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class ExpenseService {
     
     private final CategoryRepository categoryRepository;
-    private final CategoryService categoryService;
     private final ExpenseRepository expenseRepository;
     private final ProfileService profileService;
 
@@ -44,6 +44,18 @@ public class ExpenseService {
         return list.stream().map(this::toDTO).toList();
     }
 
+    public List<ExpenseDTO> getLatest5ExpensesForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<ExpenseEntity> list = expenseRepository.findTop5ByProfileIdOrderByDateDesc(profile.getId());
+        return list.stream().map(this::toDTO).toList();
+    }
+
+    public BigDecimal getTotalExpenseForCurrentUser(){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        BigDecimal total = expenseRepository.findTotalExpenseByProfileId(profile.getId());
+        return total != null ? total : BigDecimal.ZERO;
+    }
+
     public void deleteExpense(Long expenseId){
         ProfileEntity profile = profileService.getCurrentProfile();
         ExpenseEntity entity = expenseRepository.findById(expenseId)
@@ -53,6 +65,12 @@ public class ExpenseService {
             throw new RuntimeException("Unauthoized to delete this expense");
         }
         expenseRepository.delete(entity);
+    }
+
+    public List<ExpenseDTO> filterExpense(LocalDate startDate, LocalDate endDate, String keyword, org.springframework.data.domain.Sort sort){
+        ProfileEntity profile = profileService.getCurrentProfile();
+        List<ExpenseEntity> list = expenseRepository.findByProfileIdAndDateBetweenAndNameContainingIgnoreCase(profile.getId(), startDate, endDate, keyword, sort);
+        return list.stream().map(this::toDTO).toList();
     }
 
     private ExpenseEntity toEntity(ExpenseDTO dto, ProfileEntity profile, CategoryEntity category){
