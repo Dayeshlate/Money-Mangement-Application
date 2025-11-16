@@ -25,6 +25,8 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity,Long> {
         org.springframework.data.domain.Sort sort            
     );
 
+    List<ExpenseEntity> findByProfileIdAndDate(Long profileId, LocalDate date);
+
     List<ExpenseEntity> findByProfileIdAndDateBetween(Long profilrId, LocalDate startDate, LocalDate endDate);
     
 }

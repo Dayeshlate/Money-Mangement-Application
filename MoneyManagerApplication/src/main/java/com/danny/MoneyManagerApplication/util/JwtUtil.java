@@ -1,6 +1,7 @@
 package com.danny.MoneyManagerApplication.util;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -19,8 +20,8 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // 🔐 Secret key for signing (keep it safe, e.g. in environment variable) it is random
-    private static final String SECRET_KEY = "oJ8jwrnVxSTx7+DzY7IhfqZIV4QyR2bV1PVRzEcS5mk=";  // base64 version
+    @Value("${JWT_SECRATE}")
+    private String SECRET_KEY;
 
     // ✅ Generate a JWT token
     public String generateToken(UserDetails userDetails) {
@@ -30,12 +31,12 @@ public class JwtUtil {
     // ✅ Generate token with extra claims (custom data)
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
-                .setClaims(extraClaims) // custom info like role, etc.
-                .setSubject(userDetails.getUsername()) // username/email
-                .setIssuedAt(new Date(System.currentTimeMillis())) // issue time
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // sign using secret key
-                .compact(); // create final token string
+                .setClaims(extraClaims) 
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256) 
+                .compact(); 
     }
 
     // ✅ Extract username (subject) from token
