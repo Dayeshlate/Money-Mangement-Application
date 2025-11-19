@@ -7,3 +7,18 @@ body {
   color: inherit !important;
 
 }
+/* Hide Edge default password eye icon */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+}
+
+/* Hide Chromium-based Edge default password icon */
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none !important;
+  visibility: hidden !important;
+}

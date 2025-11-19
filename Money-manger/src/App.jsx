@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AppContextProvider } from "./context/AppContext";
+
 
 // Pages
 import Home from './pages/Home'
@@ -19,6 +21,7 @@ function App() {
       <Toaster />
 
       <BrowserRouter>
+      <AppContextProvider>
         <Routes>
           <Route path="/dashboard" element={<Home />} />
           <Route path="/income" element={<Income />} />
@@ -28,6 +31,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
+        </AppContextProvider>
       </BrowserRouter>
     </>
   )
