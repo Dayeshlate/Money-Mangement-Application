@@ -23,6 +23,7 @@ function App() {
       <BrowserRouter>
       <AppContextProvider>
         <Routes>
+          <Route path="/" element={<Root/>}/>
           <Route path="/dashboard" element={<Home />} />
           <Route path="/income" element={<Income />} />
           <Route path="/expense" element={<Expense />} />
@@ -34,6 +35,15 @@ function App() {
         </AppContextProvider>
       </BrowserRouter>
     </>
+  )
+}
+const Root = () => {
+  const isAuthenticated = !!localStorage.getToken("token");
+  return isAuthenticated ? (
+    <Navigate to="/dashboard"></Navigate>
+  ) : (
+
+    <Navigate to="/dashboard"></Navigate>
   )
 }
 

@@ -1,8 +1,13 @@
 import React from 'react'
+import Dashboard from '../components/Dashboard'
+import useUser from '../hooks/useUser'
 
 function Filter() {
+  useUser();
   return (
-    <div>Filter</div>
+    <Dashboard activeMenu="Filter">
+      This is the filter
+    </Dashboard>
   )
 }
 
