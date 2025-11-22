@@ -72,5 +72,10 @@ public class ProfileController {
     public String tset() {
         return "Test succesfull";
     }
+    @GetMapping("/public")
+    public ResponseEntity<ProfileDTO> getPublicProfile(){
+        ProfileDTO profileDTO = profileService.getPublicProfile(null);
+        return ResponseEntity.ok(profileDTO);
+    }
     
 }

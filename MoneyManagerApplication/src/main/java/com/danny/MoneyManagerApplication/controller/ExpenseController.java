@@ -33,7 +33,7 @@ public class ExpenseController {
     }
 
 
-    @GetMapping("/month")
+    @GetMapping
     public ResponseEntity<List<ExpenseDTO>> getExpense(){
         List<ExpenseDTO> expenses = expenseService.getCurrentMonthExpensesForCurrentUser();
         return ResponseEntity.ok(expenses);
