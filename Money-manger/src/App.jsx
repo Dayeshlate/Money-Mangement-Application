@@ -11,6 +11,7 @@ import Category from './pages/Category'
 import Filter from './pages/Filter'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import DashboardHome from './pages/DashoardHome';
 
 // Toast (fix spelling)
 import { Toaster } from 'react-hot-toast'
@@ -24,7 +25,8 @@ function App() {
       <AppContextProvider>
         <Routes>
           <Route path="/" element={<Root/>}/>
-          <Route path="/dashboard" element={<Home />} />
+          {/**<Route path="/dashboard" element={<Home />} /> */}
+          <Route path="/dashboard" element={<DashboardHome />} />
           <Route path="/income" element={<Income />} />
           <Route path="/expense" element={<Expense />} />
           <Route path="/category" element={<Category />} />

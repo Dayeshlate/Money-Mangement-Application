@@ -76,7 +76,7 @@ function Login() {
             <Input
               label="Email"
               value={email}
-              onChange={setEmail}
+              onChange={(e)=>setEmail(e.target.value)}
               placeholder="example@gmail.com"
               type="text"
             />
@@ -84,7 +84,7 @@ function Login() {
             <Input
               label="Password"
               value={password}
-              onChange={setPassword}
+              onChange={(e)=>setPassword(e.target.value)}
               placeholder="Enter password"
               type="password"
             />

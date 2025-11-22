@@ -88,7 +88,7 @@ function Signup() {
             <div className="grid grid-cols-2 gap-4">
               <Input
                 value={fullName}
-                onChange={setFullName}
+                onChange={(e)=>setFullName(e.target.value)}
                 label="Full Name"
                 placeholder="Danny"
                 type="text"
@@ -96,7 +96,7 @@ function Signup() {
 
               <Input
                 value={email}
-                onChange={setEmail}
+                onChange={(e)=>setEmail(e.target.value)}
                 label="Email"
                 placeholder="danny@gmail.com"
                 type="text"
@@ -105,8 +105,7 @@ function Signup() {
               <div className="col-span-2">
                 <Input
                   value={password}
-                  onChange={
-                    setPassword}
+                  onChange={(e)=>setPassword(e.target.value)}
                   label="Password"
                   placeholder="Enter password"
                   type="password"
