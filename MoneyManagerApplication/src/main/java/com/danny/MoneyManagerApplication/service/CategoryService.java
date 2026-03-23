@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService {
+public class  CategoryService {
     private final ProfileService profileService;
     private final CategoryRepository categoryRepository;
 

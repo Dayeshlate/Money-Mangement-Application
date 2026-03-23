@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ExpenseService {
+public class    ExpenseService {
     
     private final CategoryRepository categoryRepository;
     private final ExpenseRepository expenseRepository;

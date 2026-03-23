@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class IncomeDTO {
-    
+
     private Long id;
     private String name;
     private String icon;
