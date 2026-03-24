@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
 import axiosConfig from "../util/axiosConfig";
 import { API_ENDPOINT } from "../util/apiEndpoints";
+import useUser from "../hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { ArrowDownCircle, ArrowUpCircle } from "lucide-react";
 import { toast } from "react-hot-toast";
 
 function DashboardHome() {
+  useUser();
+
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [incomeList, setIncomeList] = useState([]);
   const [expenseList, setExpenseList] = useState([]);
@@ -20,9 +25,16 @@ function DashboardHome() {
     { name: "Expense", value: totalExpense },
   ];
 
-  const COLORS = ["#4fe02d", "#EF4444"];
+  const COLORS = ["#43A047", "#EF4444"];
 
   const fetchDashboardData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login to continue");
+      navigate("/login");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -44,7 +56,7 @@ function DashboardHome() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [navigate]);
 
   return (
     <Dashboard activeMenu="Dashboard">
@@ -65,8 +77,8 @@ function DashboardHome() {
                  data={chartData}
                  cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={85}
+                  innerRadius={40}
+                  outerRadius={60}
                   paddingAngle={4}
                   dataKey="value"
                   labelLine={false}

@@ -50,7 +50,7 @@ function Signup() {
       })
       if(response.status === 200){
         toast.success("Profile created succesfully");
-        navigate("/profile/login");
+        navigate("/login");
       }
     }catch(err){
       console.error("Something went wrong",err);

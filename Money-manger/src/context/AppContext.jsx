@@ -12,6 +12,7 @@ export const AppContextProvider = ({ children }) => {
   const contextValue = {
     user,
     setUser,
+    clearUser,
   };
 
   return (

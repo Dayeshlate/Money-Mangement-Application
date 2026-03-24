@@ -4,7 +4,7 @@ export const API_ENDPOINT ={
     LOGIN :"/profile/login",
     REGISTER: "/profile/register",
 
-    GET_USER_INFO : "/profile/public",
+    GET_USER_INFO : "/profile/me",
 
     GET_ALL_CATEGORIES : "/categories",
     SAVE_CATEGORIES : "/categories/save",

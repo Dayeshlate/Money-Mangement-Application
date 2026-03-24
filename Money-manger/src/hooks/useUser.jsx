@@ -11,6 +11,13 @@ function useUser() {
   useEffect(() => {
     if (user) return; // FIXED
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      clearUser?.();
+      navigate("/login");
+      return;
+    }
+
     let isMounted = true;
 
     const fetchUserInfo = async () => {
@@ -25,7 +32,8 @@ function useUser() {
         console.log("Failed to fetch the user info");
 
         if (isMounted) {
-          clearUser;
+          localStorage.removeItem("token");
+          clearUser?.();
           navigate("/login");
         }
       }

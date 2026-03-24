@@ -9,7 +9,6 @@ const axiosConfig = axios.create({
   },
 });
 
-// List of endpoints that do NOT require token
 const excludeEndpoint = [
   "/profile/login",
   "/profile/signup",
@@ -19,11 +18,9 @@ const excludeEndpoint = [
   "/health",
 ];
 
-// Request interceptor
 axiosConfig.interceptors.request.use(
   (config) => {
 
-    // FIX: Added return here
     const shouldSkipToken = excludeEndpoint.some((endpoint) => {
       return config.url?.includes(endpoint);
     });
@@ -40,13 +37,13 @@ axiosConfig.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor
 axiosConfig.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      if (error.response.status === 401) {
-        window.location.href = "/profile/login";
+      if (error.response.status === 401 || error.response.status === 403) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       } else if (error.response.status === 500) {
         console.log("Server error please try again later");
       } else if (error.code === "ECONNABORTED") {

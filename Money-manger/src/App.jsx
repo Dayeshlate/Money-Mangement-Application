@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppContextProvider } from "./context/AppContext";
 
 
@@ -16,6 +16,11 @@ import DashboardHome from './pages/DashoardHome';
 // Toast (fix spelling)
 import { Toaster } from 'react-hot-toast'
 
+const ProtectedRoute = ({ children }) => {
+  const hasToken = Boolean(localStorage.getItem("token"));
+  return hasToken ? children : <Navigate to="/login" replace />;
+};
+
 function App() {
   return (
     <>
@@ -26,11 +31,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Root/>}/>
           {/**<Route path="/dashboard" element={<Home />} /> */}
-          <Route path="/dashboard" element={<DashboardHome />} />
-          <Route path="/income" element={<Income />} />
-          <Route path="/expense" element={<Expense />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/filter" element={<Filter />} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
+          <Route path="/income" element={<ProtectedRoute><Income /></ProtectedRoute>} />
+          <Route path="/expense" element={<ProtectedRoute><Expense /></ProtectedRoute>} />
+          <Route path="/category" element={<ProtectedRoute><Category /></ProtectedRoute>} />
+          <Route path="/filter" element={<ProtectedRoute><Filter /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
@@ -40,13 +45,12 @@ function App() {
   )
 }
 const Root = () => {
-  const isAuthenticated = !!localStorage.getToken("token");
+  const isAuthenticated = Boolean(localStorage.getItem("token"));
   return isAuthenticated ? (
-    <Navigate to="/dashboard"></Navigate>
+    <Navigate to="/dashboard" replace></Navigate>
   ) : (
-
-    <Navigate to="/dashboard"></Navigate>
-  )
+    <Navigate to="/login" replace></Navigate>
+  );
 }
 
 export default App

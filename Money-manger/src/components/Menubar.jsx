@@ -15,8 +15,8 @@ function Menubar() {
   const navigate = useNavigate();
 
   const handleLogout = () =>{
-    localStorage.clear();
-    clearUser;
+    localStorage.removeItem("token");
+    clearUser?.();
     setShowDropdown(false);
     navigate("/login");
   }
