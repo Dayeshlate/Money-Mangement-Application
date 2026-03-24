@@ -20,7 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tbl_categories")
+@Table(name = "tbl_categories", schema = "public")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

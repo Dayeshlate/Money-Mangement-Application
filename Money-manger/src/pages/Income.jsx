@@ -15,12 +15,15 @@ function Income() {
 
   const [loading, setLoading] = useState(false);
   const [incomeData, setIncomeData] = useState([]);
+  const [categories, setCategories] = useState([]); // ✅ added
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
 
+  // 🔹 Fetch incomes
   const fetchIncome = async () => {
     try {
       const response = await axiosConfig.get(API_ENDPOINT.GET_ALL_INCOME);
       if (response.status === 200) {
+        console.log("INCOME:", response.data);
         setIncomeData(response.data);
       }
     } catch (error) {
@@ -28,10 +31,23 @@ function Income() {
     }
   };
 
+  // 🔹 Fetch categories
+  const fetchCategories = async () => {
+    try {
+      const res = await axiosConfig.get(API_ENDPOINT.GET_ALL_CATEGORIES);
+      console.log("ALL CATEGORIES:", res.data);
+      setCategories(res.data);
+    } catch (error) {
+      toast.error("Failed to fetch categories");
+    }
+  };
+
   useEffect(() => {
     fetchIncome();
+    fetchCategories(); // ✅ important
   }, []);
 
+  // 🔹 Add income
   const handleAddIncome = async (income) => {
     try {
       await axiosConfig.post(API_ENDPOINT.CREATE_INCOME, income);
@@ -43,6 +59,7 @@ function Income() {
     }
   };
 
+  // 🔹 Delete income
   const handleDeleteIncome = async (id) => {
     try {
       await axiosConfig.delete(API_ENDPOINT.DELETE_INCOME + id);
@@ -76,7 +93,10 @@ function Income() {
           onClose={() => setOpenAddIncomeModal(false)}
           title="Add New Income"
         >
-          <AddIncomeForm onAddIncome={handleAddIncome} />
+          <AddIncomeForm 
+            onAddIncome={handleAddIncome} 
+            categories={categories} 
+          />
         </Model>
 
       </div>
