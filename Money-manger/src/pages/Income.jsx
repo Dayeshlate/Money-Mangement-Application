@@ -18,7 +18,6 @@ function Income() {
   const [categories, setCategories] = useState([]); // ✅ added
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
 
-  // 🔹 Fetch incomes
   const fetchIncome = async () => {
     try {
       const response = await axiosConfig.get(API_ENDPOINT.GET_ALL_INCOME);
@@ -31,7 +30,6 @@ function Income() {
     }
   };
 
-  // 🔹 Fetch categories
   const fetchCategories = async () => {
     try {
       const res = await axiosConfig.get(API_ENDPOINT.GET_ALL_CATEGORIES);
@@ -44,10 +42,9 @@ function Income() {
 
   useEffect(() => {
     fetchIncome();
-    fetchCategories(); // ✅ important
+    fetchCategories(); 
   }, []);
 
-  // 🔹 Add income
   const handleAddIncome = async (income) => {
     try {
       await axiosConfig.post(API_ENDPOINT.CREATE_INCOME, income);
@@ -59,7 +56,6 @@ function Income() {
     }
   };
 
-  // 🔹 Delete income
   const handleDeleteIncome = async (id) => {
     try {
       await axiosConfig.delete(API_ENDPOINT.DELETE_INCOME + id);

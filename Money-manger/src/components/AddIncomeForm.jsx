@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Input from "./Input";
-import axiosConfig from "../util/axiosConfig";
-import { API_ENDPOINT } from "../util/apiEndpoints";
 import { toast } from "react-hot-toast";
 
-function AddIncomeForm({ onAddIncome }) {
+function AddIncomeForm({ onAddIncome, categories = [] }) {
 
   const [income, setIncome] = useState({
     amount: "",
@@ -13,26 +11,22 @@ function AddIncomeForm({ onAddIncome }) {
     categoryId: "",
   });
 
-  const [categories, setCategories] = useState([]);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await axiosConfig.get(API_ENDPOINT.GET_ALL_CATEGORIES);
-      setCategories(response.data);
-    } catch (error) {
-      toast.error("Failed to load categories");
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const incomeCategories = categories.filter(
+    (cat) => (cat.type || "").toLowerCase() === "income"
+  );
+  const selectableCategories = incomeCategories.length > 0 ? incomeCategories : categories;
+  const hasCategories = selectableCategories.length > 0;
 
   const handleChange = (key, value) => {
     setIncome({ ...income, [key]: value });
   };
 
   const handleSubmit = () => {
+    if (!hasCategories) {
+      toast.error("No category found. Please add a category first.");
+      return;
+    }
+
     if (!income.amount || !income.categoryId) {
       toast.error("Amount and Category are required");
       return;
@@ -79,11 +73,17 @@ function AddIncomeForm({ onAddIncome }) {
         isSelect={true}
         value={income.categoryId}
         onChange={(e) => handleChange("categoryId", e.target.value)}
-        options={categories.map((cat) => ({
+        options={selectableCategories.map((cat) => ({
           value: cat.id,
           label: cat.name,
         }))}
       />
+
+      {!hasCategories && (
+        <p className="text-sm text-red-600 mt-2">
+          No categories available. Add category from Category page first.
+        </p>
+      )}
 
       <button
         onClick={handleSubmit}
