@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Signup_bg from "../assets/Signup_bg.jpg";
-import Input from '../components/Input';  
+import Input from '../components/Input';
 import { validEmail } from '../util/validation';
 import axiosConfig from '../util/axiosConfig';
 import { LoaderCircle } from 'lucide-react';
-import {API_ENDPOINT} from '../util/apiEndpoints';
+import { API_ENDPOINT } from '../util/apiEndpoints';
 
 function Signup() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [isLoading,setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showActivationPopup, setShowActivationPopup] = useState(false);
 
   const navigate = useNavigate();
 
@@ -48,13 +49,17 @@ function Signup() {
         email,
         password,
       })
-      if(response.status === 200){
-        toast.success("Profile created succesfully");
-        navigate("/login");
+      console.log("Signup response:", response);
+      if (response.status === 201 || response.status === 200) {
+        setShowActivationPopup(true);
+        setFullName("");
+        setEmail("");
+        setPassword("");
       }
     }catch(err){
-      console.error("Something went wrong",err);
-      setError(err.message);
+      console.error("Signup error:", err);
+      const errorMsg = err.response?.data?.message || err.message || "Signup failed. Please try again.";
+      setError(errorMsg);
     }finally{
       setIsLoading(false);
     }
@@ -119,10 +124,10 @@ function Signup() {
               </p>
             )}
 
-            <button disable={isLoading} className={`bg-blue-600 text-white w-full flex item-center justify-center gap-2 ${isLoading ? "opacity-60 cursor-not-allowed":""} py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition`} type='submit'>
+            <button disabled={isLoading} className={`bg-blue-600 text-white w-full flex item-center justify-center gap-2 ${isLoading ? "opacity-60 cursor-not-allowed" : ""} py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition`} type='submit'>
               {isLoading ? (
                 <>
-                <LoaderCircle className='"animate-spin w-5 h-5'/>
+                <LoaderCircle className='animate-spin w-5 h-5' />
                 Signing up...
                 </>
               ) : (
@@ -141,6 +146,33 @@ function Signup() {
 
         </div>
       </div>
+
+      {showActivationPopup && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 px-4">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl text-center">
+            <h4 className="text-xl font-semibold text-slate-900 mb-2">Signup Successful</h4>
+            <p className="text-slate-700 mb-5">
+              Your profile is created. Activation link is sent to your email.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowActivationPopup(false)}
+                className="px-4 py-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+              >
+                Go to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: moneymanager-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: moneymanager
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d moneymanager"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: maven:3.9-eclipse-temurin-21
+    container_name: moneymanager-backend
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - maven_cache:/root/.m2
+    command: sh -c "chmod +x mvnw && ./mvnw spring-boot:run"
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASEURL: ${DATABASEURL}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      EMAIL_USERNAME: ${EMAIL_USERNAME}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      JWT_SECRATE: ${JWT_SECRATE}
+      MONEY_MANAGER_FRONTED: ${MONEY_MANAGER_FRONTED}
+
+volumes:
+  postgres_data:
+  maven_cache:
