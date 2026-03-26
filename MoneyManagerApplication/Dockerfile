@@ -20,4 +20,4 @@ COPY --from=builder /app/target/*jar app.jar
 
 EXPOSE 8080
 
-CMD ["app.jar"]
+CMD ["java", "-jar", "app.jar"]
