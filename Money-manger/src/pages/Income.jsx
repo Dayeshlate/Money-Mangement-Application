@@ -15,7 +15,8 @@ function Income() {
 
   const [loading, setLoading] = useState(false);
   const [incomeData, setIncomeData] = useState([]);
-  const [categories, setCategories] = useState([]); // ✅ added
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false);
 
   const fetchIncome = async () => {
@@ -32,11 +33,14 @@ function Income() {
 
   const fetchCategories = async () => {
     try {
+      setCategoriesLoading(true);
       const res = await axiosConfig.get(API_ENDPOINT.GET_ALL_CATEGORIES);
       console.log("ALL CATEGORIES:", res.data);
       setCategories(res.data);
     } catch (error) {
       toast.error("Failed to fetch categories");
+    } finally {
+      setCategoriesLoading(false);
     }
   };
 
@@ -92,7 +96,8 @@ function Income() {
         >
           <AddIncomeForm 
             onAddIncome={handleAddIncome} 
-            categories={categories} 
+            categories={categories}
+            categoriesLoading={categoriesLoading}
           />
         </Model>
 

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Input from "./Input";
-import axiosConfig from "../util/axiosConfig";
-import { API_ENDPOINT } from "../util/apiEndpoints";
 import { toast } from "react-hot-toast";
 
-function AddExpenseForm({ onAddExpense }) {
+function AddExpenseForm({ onAddExpense, categories = [], categoriesLoading = false }) {
 
   const [expense, setExpense] = useState({
     amount: "",
@@ -13,21 +11,11 @@ function AddExpenseForm({ onAddExpense }) {
     categoryId: "",
   });
 
-  const [categories, setCategories] = useState([]);
-
-  // Fetch categories list
-  const fetchCategories = async () => {
-    try {
-      const response = await axiosConfig.get(API_ENDPOINT.GET_ALL_CATEGORIES);
-      setCategories(response.data);
-    } catch (error) {
-      toast.error("Failed to load categories");
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const expenseCategories = categories.filter(
+    (cat) => (cat.type || "").toLowerCase() === "expense"
+  );
+  const selectableCategories = expenseCategories.length > 0 ? expenseCategories : categories;
+  const hasCategories = selectableCategories.length > 0;
 
   // Update state on change
   const handleChange = (key, value) => {
@@ -36,6 +24,16 @@ function AddExpenseForm({ onAddExpense }) {
 
   // Save Expense
   const handleSubmit = () => {
+    if (categoriesLoading) {
+      toast.error("Please wait, loading categories...");
+      return;
+    }
+
+    if (!hasCategories) {
+      toast.error("No expense category found. Please add expense category first.");
+      return;
+    }
+
     if (!expense.amount || !expense.categoryId) {
       toast.error("Amount and Category are required");
       return;
@@ -83,19 +81,36 @@ function AddExpenseForm({ onAddExpense }) {
         isSelect={true}
         value={expense.categoryId}
         onChange={(e) => handleChange("categoryId", e.target.value)}
-        options={categories.map((cat) => ({
+        options={selectableCategories.map((cat) => ({
           value: cat.id,
           label: cat.name,
         }))}
       />
 
+      {categoriesLoading && (
+        <p className="text-sm text-gray-600 mt-1">
+          Loading categories...
+        </p>
+      )}
+
+      {!categoriesLoading && !hasCategories && (
+        <p className="text-sm text-red-600 mt-1">
+          No expense categories available. Add one in Category page.
+        </p>
+      )}
+
       {/* ✅ Save Expense Button */}
       <button
         type="button"
         onClick={handleSubmit}
-        className="mt-4 bg-purple-600 text-white w-full py-3 rounded-lg text-lg font-medium hover:bg-red-700 transition"
+        disabled={categoriesLoading}
+        className={`mt-4 text-white w-full py-3 rounded-lg text-lg font-medium transition ${
+          categoriesLoading
+            ? "bg-purple-400 cursor-not-allowed"
+            : "bg-purple-600 hover:bg-red-700"
+        }`}
       >
-        Save Expense
+        {categoriesLoading ? "Loading..." : "Save Expense"}
       </button>
 
     </div>

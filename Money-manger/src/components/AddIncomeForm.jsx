@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "./Input";
 import { toast } from "react-hot-toast";
 
-function AddIncomeForm({ onAddIncome, categories = [] }) {
+function AddIncomeForm({ onAddIncome, categories = [], categoriesLoading = false }) {
 
   const [income, setIncome] = useState({
     amount: "",
@@ -22,6 +22,11 @@ function AddIncomeForm({ onAddIncome, categories = [] }) {
   };
 
   const handleSubmit = () => {
+    if (categoriesLoading) {
+      toast.error("Please wait, loading categories...");
+      return;
+    }
+
     if (!hasCategories) {
       toast.error("No category found. Please add a category first.");
       return;
@@ -79,7 +84,13 @@ function AddIncomeForm({ onAddIncome, categories = [] }) {
         }))}
       />
 
-      {!hasCategories && (
+      {categoriesLoading && (
+        <p className="text-sm text-gray-600 mt-2">
+          Loading categories...
+        </p>
+      )}
+
+      {!categoriesLoading && !hasCategories && (
         <p className="text-sm text-red-600 mt-2">
           No categories available. Add category from Category page first.
         </p>
@@ -88,9 +99,14 @@ function AddIncomeForm({ onAddIncome, categories = [] }) {
       <button
         type="button"
         onClick={handleSubmit}
-        className="mt-4 bg-purple-600 text-white w-full py-3 rounded-lg text-lg font-medium hover:bg-purple-700 transition"
+        disabled={categoriesLoading}
+        className={`mt-4 text-white w-full py-3 rounded-lg text-lg font-medium transition ${
+          categoriesLoading
+            ? "bg-purple-400 cursor-not-allowed"
+            : "bg-purple-600 hover:bg-purple-700"
+        }`}
       >
-        Save Income
+        {categoriesLoading ? "Loading..." : "Save Income"}
       </button>
 
     </div>

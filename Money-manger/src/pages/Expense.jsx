@@ -14,6 +14,8 @@ function Expense() {
   useUser();
 
   const [expenseData, setExpenseData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false);
 
   const fetchExpense = async () => {
@@ -29,7 +31,22 @@ function Expense() {
 
   useEffect(() => {
     fetchExpense();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      setCategoriesLoading(true);
+      const response = await axiosConfig.get(API_ENDPOINT.GET_ALL_CATEGORIES);
+      if (response.status === 200) {
+        setCategories(response.data);
+      }
+    } catch (error) {
+      toast.error("Failed to fetch categories");
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
 
   const handleAddExpense = async (expense) => {
     try {
@@ -76,7 +93,7 @@ function Expense() {
           onClose={() => setOpenAddExpenseModal(false)}
           title="Add New Expense"
         >
-          <AddExpenseForm onAddExpense={handleAddExpense} />
+          <AddExpenseForm onAddExpense={handleAddExpense} categories={categories} categoriesLoading={categoriesLoading} />
         </Model>
 
       </div>

@@ -45,7 +45,7 @@ axiosConfig.interceptors.response.use(
       const requestUrl = error.config?.url || "";
       const isLoginRequest = requestUrl.includes(API_ENDPOINT.LOGIN);
 
-      if ((error.response.status === 401 || error.response.status === 403) && !isLoginRequest) {
+      if (error.response.status === 401 && !isLoginRequest) {
         localStorage.removeItem("token");
         if (window.location.hash !== "#/login") {
           window.location.hash = "/login";
