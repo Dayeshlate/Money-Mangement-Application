@@ -47,9 +47,8 @@ axiosConfig.interceptors.response.use(
 
       if ((error.response.status === 401 || error.response.status === 403) && !isLoginRequest) {
         localStorage.removeItem("token");
-        if (window.location.pathname !== "/login") {
-          window.history.pushState({}, "", "/login");
-          window.dispatchEvent(new PopStateEvent("popstate"));
+        if (window.location.hash !== "#/login") {
+          window.location.hash = "/login";
         }
       } else if (error.response.status === 500) {
         console.log("Server error please try again later");

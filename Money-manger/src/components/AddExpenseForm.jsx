@@ -91,6 +91,7 @@ function AddExpenseForm({ onAddExpense }) {
 
       {/* ✅ Save Expense Button */}
       <button
+        type="button"
         onClick={handleSubmit}
         className="mt-4 bg-purple-600 text-white w-full py-3 rounded-lg text-lg font-medium hover:bg-red-700 transition"
       >

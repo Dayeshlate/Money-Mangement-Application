@@ -74,6 +74,7 @@ function Income() {
           <h2 className="text-2xl font-semibold">All Incomes</h2>
 
           <button
+            type="button"
             className="flex add-btn items-center gap-1"
             onClick={() => setOpenAddIncomeModal(true)}
           >

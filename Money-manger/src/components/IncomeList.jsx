@@ -43,6 +43,7 @@ function IncomeList({ incomes, onDelete }) {
 
               {/* Delete Button */}
               <button
+                type="button"
                 onClick={() => onDelete(income.id)}
                 className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition bg-red-50 hover:bg-red-100 text-red-600 p-2 rounded-full"
               >

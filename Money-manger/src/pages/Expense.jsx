@@ -60,6 +60,7 @@ function Expense() {
           <h2 className="text-2xl font-semibold">All Expenses</h2>
 
           <button
+            type="button"
             className="flex add-btn items-center gap-1"
             onClick={() => setOpenAddExpenseModal(true)}
           >

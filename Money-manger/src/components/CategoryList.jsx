@@ -42,6 +42,7 @@ function CategoryList({ categories, onEditCategory, onUpdateCategory }) {
 
               {/* Action Button */}
               <button
+                type="button"
                 className="absolute right-3 opacity-0 group-hover:opacity-100 transition"
                 onClick={() => onEditCategory(category)}
               >

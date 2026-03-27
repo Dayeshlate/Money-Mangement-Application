@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppContextProvider } from "./context/AppContext";
 
 
@@ -26,7 +26,7 @@ function App() {
     <>
       <Toaster />
 
-      <BrowserRouter>
+      <HashRouter>
       <AppContextProvider>
         <Routes>
           <Route path="/" element={<Root/>}/>
@@ -43,7 +43,7 @@ function App() {
           <Route path="*" element={<Root />} />
         </Routes>
         </AppContextProvider>
-      </BrowserRouter>
+      </HashRouter>
     </>
   )
 }

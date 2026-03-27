@@ -29,6 +29,7 @@ function EmojiPickerPopUp({ icon, onSelect }) {
         <div className="relative">
           {/* Close button */}
           <button
+            type="button"
             onClick={() => setIsOpen(false)}
             className="w-7 h-7 flex items-center justify-center bg-white border border-gray-200 rounded-full absolute -top-2 -right-2 z-10 cursor-pointer"
           >
