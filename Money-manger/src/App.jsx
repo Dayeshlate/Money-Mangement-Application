@@ -32,12 +32,15 @@ function App() {
           <Route path="/" element={<Root/>}/>
           {/**<Route path="/dashboard" element={<Home />} /> */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardHome /></ProtectedRoute>} />
+          <Route path="/dashbord" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashoard" element={<Navigate to="/dashboard" replace />} />
           <Route path="/income" element={<ProtectedRoute><Income /></ProtectedRoute>} />
           <Route path="/expense" element={<ProtectedRoute><Expense /></ProtectedRoute>} />
           <Route path="/category" element={<ProtectedRoute><Category /></ProtectedRoute>} />
           <Route path="/filter" element={<ProtectedRoute><Filter /></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<Root />} />
         </Routes>
         </AppContextProvider>
       </BrowserRouter>

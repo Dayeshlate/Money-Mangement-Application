@@ -61,6 +61,7 @@ function AddCategoryForm({ onAddCategory }) {
       />
 
       <button
+        type="button"
         onClick={handleSubmit}
         className="mt-4 bg-purple-600 text-white w-full py-3 rounded-lg text-lg font-medium hover:bg-purple-700 transition"
       >

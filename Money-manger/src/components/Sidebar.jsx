@@ -33,6 +33,7 @@ function Sidebar({activeMenu}) {
 
       {SIDE_BAR_DATA.map((item, index) => (
         <button
+          type="button"
           onClick={() => navigate(item.path)}
           key={`menu_${index}`}
           className={`

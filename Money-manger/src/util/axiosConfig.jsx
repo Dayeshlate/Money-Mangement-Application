@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BASE_URL } from "./apiEndpoints";
+import { API_ENDPOINT } from "./apiEndpoints";
 
 const axiosConfig = axios.create({
   baseURL: BASE_URL,
@@ -41,9 +42,15 @@ axiosConfig.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      if (error.response.status === 401 || error.response.status === 403) {
+      const requestUrl = error.config?.url || "";
+      const isLoginRequest = requestUrl.includes(API_ENDPOINT.LOGIN);
+
+      if ((error.response.status === 401 || error.response.status === 403) && !isLoginRequest) {
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        if (window.location.pathname !== "/login") {
+          window.history.pushState({}, "", "/login");
+          window.dispatchEvent(new PopStateEvent("popstate"));
+        }
       } else if (error.response.status === 500) {
         console.log("Server error please try again later");
       } else if (error.code === "ECONNABORTED") {

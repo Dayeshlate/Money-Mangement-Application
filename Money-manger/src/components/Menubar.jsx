@@ -29,6 +29,7 @@ function Menubar() {
       {/* Left side */}
       <div className="flex items-center gap-5">
         <button 
+          type="button"
           onClick={() => setOpenSideMenu(!openSideMenu)} 
           className="block lg:hidden text-black hover:bg-gray-100 p-1 rounded transition-colors"
         >
@@ -48,6 +49,7 @@ function Menubar() {
       {/* Right side */}
       <div className="relative" ref={dropdownRef}>
         <button 
+          type="button"
           onClick={() => setShowDropdown(!showDropdown)}
           className="flex items-center justify-center w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-800 focus:ring-offset-2">
           <User className="text-purple-500"/>
@@ -76,7 +78,7 @@ function Menubar() {
 
             {/* dropdown options */}
             <div className="py-1">
-                <button onClick={handleLogout} className="flex item-center gap-3 w-full px-4 py-1 text-sm text-gray-700 hover:bg-gray-50 transation-colors duration-150">
+              <button type="button" onClick={handleLogout} className="flex item-center gap-3 w-full px-4 py-1 text-sm text-gray-700 hover:bg-gray-50 transation-colors duration-150">
                     <LogOut className="w-4 h-4 text-gray-500"/>
                     <span>Logout</span>
                 </button>
