@@ -2,6 +2,7 @@ package com.danny.MoneyManagerApplication.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,6 +30,9 @@ public class SecurityConfig {
 
     private final AppUserDetailService appUserDetailService;
     private final JwtRequestFilter jwtRequestFilter;
+
+    @Value("${money.manger.fronted.url}")
+    private String frontendUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -60,7 +64,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*"));
+        config.setAllowedOrigins(List.of(frontendUrl));
         config.setAllowedMethods(List.of("GET", "POST", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
         config.setAllowCredentials(false);
@@ -76,5 +80,6 @@ public class SecurityConfig {
         provider.setUserDetailsService(appUserDetailService);
         provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
+        
     }
 }
