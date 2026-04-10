@@ -1,14 +1,8 @@
 package com.danny.MoneyManagerApplication.service;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.danny.MoneyManagerApplication.DTO.ExpenseDTO;
-import com.danny.MoneyManagerApplication.entity.ProfileEntity;
 import com.danny.MoneyManagerApplication.repository.ProfileRepository;
 
 import lombok.RequiredArgsConstructor;
