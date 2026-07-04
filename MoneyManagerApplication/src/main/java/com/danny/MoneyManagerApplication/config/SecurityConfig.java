@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/status",
                     "/health",
+                    "/error",
                     "/profile/register",
                     "/profile/login",
                     "/profile/activate"
@@ -71,6 +72,8 @@ public class SecurityConfig {
             .filter(origin -> !origin.isEmpty())
             .collect(Collectors.toList());
 
+        allowedOriginPatterns.add("http://localhost:*");
+        allowedOriginPatterns.add("http://127.0.0.1:*");
         allowedOriginPatterns.add("https://*.vercel.app");
         config.setAllowedOriginPatterns(allowedOriginPatterns);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

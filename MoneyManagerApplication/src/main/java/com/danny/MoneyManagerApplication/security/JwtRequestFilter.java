@@ -22,8 +22,34 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/status",
+            "/health",
+            "/profile/register",
+            "/profile/login",
+            "/profile/activate"
+    };
+
     private final UserDetailsService userDetailsService; // ✅ corrected type
     private final JwtUtil jwtUtil;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+
+        if (contextPath != null && !contextPath.isEmpty() && requestUri.startsWith(contextPath)) {
+            requestUri = requestUri.substring(contextPath.length());
+        }
+
+        for (String publicEndpoint : PUBLIC_ENDPOINTS) {
+            if (requestUri.equals(publicEndpoint)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

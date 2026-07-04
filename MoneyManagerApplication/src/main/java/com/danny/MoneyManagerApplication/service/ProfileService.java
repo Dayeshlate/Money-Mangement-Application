@@ -7,6 +7,7 @@ import com.danny.MoneyManagerApplication.repository.ProfileRepository;
 import com.danny.MoneyManagerApplication.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProfileService {
 
@@ -30,7 +32,7 @@ public class ProfileService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    @Value("${EMAIL_URL}")
+    @Value("${app.activation.url}")
     private String activationUrl;
 
     public ProfileDTO registerProfile(ProfileDTO profileDTO) {
@@ -43,7 +45,11 @@ public class ProfileService {
         String subject = "Activate your Money Manager account";
         String body = "Click on the following link to activate your account: " + activationLink;
 
-        emailService.sendEmail(newProfile.getEmail(), subject, body);
+        try {
+            emailService.sendEmail(newProfile.getEmail(), subject, body);
+        } catch (Exception exception) {
+            log.error("Activation email could not be sent to {}", newProfile.getEmail(), exception);
+        }
         return toDto(newProfile);
     }
 
